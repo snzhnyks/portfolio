@@ -1,1 +1,392 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Юлиана | Digital-маркетолог и Таргетолог (Hospitality)</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #063f47;
+      --surface: rgba(255, 248, 238, 0.08);
+      --surface-strong: rgba(255, 248, 238, 0.15);
+      --text: #F5EFE6;
+      --muted: #C7B89C;
+      --gold: #D3B46E;
+      --accent: #F0E3C6;
+      --border: rgba(255, 248, 238, 0.18);
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
 
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+      background: radial-gradient(circle at top left, rgba(211, 180, 110, 0.12), transparent 26%),
+        radial-gradient(circle at bottom right, rgba(240, 227, 198, 0.08), transparent 20%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 36px 24px 60px;
+    }
+
+    .header {
+      display: grid;
+      gap: 24px;
+      padding: 36px 32px;
+      background: rgba(255, 248, 238, 0.08);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold);
+      font-size: 0.95rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .title {
+      margin: 0;
+      font-size: clamp(2.8rem, 4vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 720px;
+      font-size: 1.05rem;
+    }
+
+    .contacts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .contact-card {
+      padding: 18px 20px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(255, 248, 238, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-card strong {
+      color: var(--gold);
+      font-size: 0.95rem;
+    }
+
+    .contact-card a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.98rem;
+    }
+
+    .section {
+      margin-top: 42px;
+      display: grid;
+      gap: 24px;
+    }
+
+    .section h2 {
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+    }
+
+    .section p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 880px;
+    }
+
+    .framework {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .framework-card {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 26px;
+      background: var(--surface);
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .framework-card h3 {
+      margin: 0 0 12px;
+      color: var(--text);
+      font-size: 1.1rem;
+    }
+
+    .framework-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .cards {
+      display: grid;
+      gap: 24px;
+      margin-top: 10px;
+    }
+
+    .case-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 32px;
+      background: rgba(255, 248, 238, 0.06);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transition: transform 0.28s ease, border-color 0.28s ease;
+    }
+
+    .case-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(211, 180, 110, 0.45);
+    }
+
+    .case-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(211, 180, 110, 0.12), transparent 22%),
+        radial-gradient(circle at bottom left, rgba(240, 227, 198, 0.08), transparent 18%);
+      pointer-events: none;
+    }
+
+    .case-content {
+      position: relative;
+      padding: 32px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .case-title {
+      margin: 0;
+      font-size: 1.7rem;
+      color: var(--text);
+    }
+
+    .case-subtitle {
+      margin: 0;
+      font-size: 0.98rem;
+      color: var(--muted);
+    }
+
+    .case-list {
+      margin: 0;
+      padding-left: 1.1rem;
+      color: var(--text);
+      display: grid;
+      gap: 10px;
+      font-size: 0.96rem;
+    }
+
+    .case-list li {
+      margin-bottom: 0.5rem;
+    }
+
+    .case-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 248, 238, 0.12);
+      border: 1px solid rgba(255, 248, 238, 0.14);
+      border-radius: 999px;
+      padding: 10px 16px;
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .case-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 248, 238, 0.18);
+      background: rgba(255, 248, 238, 0.08);
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .case-link:hover {
+      background: rgba(255, 248, 238, 0.18);
+      transform: translateY(-1px);
+    }
+
+    .cta {
+      display: flex;
+      justify-content: center;
+      margin-top: 38px;
+    }
+
+    .cta-button {
+      background: linear-gradient(135deg, #d7b266, #f1e4c0);
+      color: #1b3b2b;
+      border: none;
+      border-radius: 999px;
+      padding: 18px 34px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.24);
+    }
+
+    @media (max-width: 720px) {
+      .header {
+        padding: 28px 20px;
+      }
+
+      .case-content {
+        padding: 26px;
+      }
+
+      .framework {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="header">
+      <div>
+        <div class="eyebrow">Hospitality Performance & Brand Specialist</div>
+        <h1 class="title">Юлиана</h1>
+        <p class="subtitle">Разработка маркетинговых систем для брендов сегмента eco-luxury на базе Meta Ads, TikTok Ads, Meta Pixel и автоворонок в Direct.</p>
+      </div>
+
+      <div class="contacts">
+        <div class="contact-card">
+          <strong>Email</strong>
+          <a href="mailto:forpomelliwork@gmail.com">forpomelliwork@gmail.com</a>
+        </div>
+        <div class="contact-card">
+          <strong>LinkedIn</strong>
+          <a href="https://www.linkedin.com/in/yuliana-marketologist" target="_blank">@yuliana-marketologist</a>
+        </div>
+        <div class="contact-card">
+          <strong>Telegram</strong>
+          <a href="https://t.me/ai_by_yuliana" target="_blank" rel="noreferrer">@ai_by_yuliana</a>
+        </div>
+        <div class="contact-card">
+          <strong>WhatsApp</strong>
+          <a href="https://wa.me/50763803161" target="_blank" rel="noreferrer">+507 6380 3161</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Стратегический подход</h2>
+      <p>Эффективные рекламные кампании в сфере премиального отдыха требуют четко сегментированной аудитории, точного отслеживания конверсий и автоворонок, выстраивающих личный диалог с клиентом. Мой подход сочетает анализ аудитории, перформанс-таргетинг в Meta Ads, сквозную аналитику Pixel и конверсию в Direct с эстетичной подачей премиум-брендов.</p>
+
+      <div class="framework">
+        <div class="framework-card">
+          <h3>Анализ аудитории</h3>
+          <p>Сегментация премиальных путешественников по поведению, интересам и стилю жизни. Точечный таргетинг на любителей эко-туризма, частных островов и эксклюзивного отдыха.</p>
+        </div>
+        <div class="framework-card">
+          <h3>Воронки в Direct</h3>
+          <p>Создание высококонверсионных автоворонок, запускаемых по ключевым словам в комментариях. Прогрев и квалификация лидов до момента бронирования.</p>
+        </div>
+        <div class="framework-card">
+          <h3>Таргетинг Meta Ads</h3>
+          <p>Масштабирование кампаний с помощью стильных креативов, продающих текстов, A/B тестирования и оптимизации бюджетов под сезонный спрос.</p>
+        </div>
+        <div class="framework-card">
+          <h3>Пиксель и Аналитика</h3>
+          <p>Установка и настройка Meta Pixel / CAPI для точной атрибуции. Отслеживание ключевых событий бронирования, качества лидов и окупаемости рекламы.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Избранные кейсы и стратегии</h2>
+      <div class="cards">
+        <article class="case-card">
+          <div class="case-content">
+            <h3 class="case-title">Finca Lérida</h3>
+            <p class="case-subtitle">Высокогорный Eco-Luxury отдых | Бокете, Панама</p>
+            <ul class="case-list">
+              <li>Стратегия привлечения гостей и роста бронирований в низкий сезон.</li>
+              <li>Автоворонка в Direct, запускаемая по ключевому слову <strong>Comment MIST</strong> для мгновенного захвата лидов.</li>
+              <li>Автоматические ответы, квалификация гостей и презентация специальных пакетов в личных сообщениях.</li>
+              <li>Контентная система, ориентированная на ценителей природы, велнеса и приватности.</li>
+            </ul>
+            <div class="case-footer">
+              <span class="tag">$500 / мес</span>
+              <span class="tag">Eco-Luxury Воронка</span>
+              <a class="case-link" href="Lerida.pdf" target="_blank" rel="noreferrer">Смотреть презентацию (PDF)</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="case-card">
+          <div class="case-content">
+            <h3 class="case-title">Isla Palenque</h3>
+            <p class="case-subtitle">Дикая роскошь | Частный остров-курорт</p>
+            <ul class="case-list">
+              <li>Позиционирование премиального отдыха от $1000+ за ночь.</li>
+              <li>Монетизация сезона миграции китов через таргетированные сезонные кампании.</li>
+              <li>Автоворонка прогрева в Direct по кодовому слову <strong>Comment WHALE</strong>.</li>
+              <li>Работа с возражениями премиум-клиентов через экспертные креативы и сценарии ретаргетинга.</li>
+            </ul>
+            <div class="case-footer">
+              <span class="tag">$500 / мес</span>
+              <span class="tag">Стратегия для Частного Острова</span>
+              <a class="case-link" href="Palenque.pdf" target="_blank" rel="noreferrer">Смотреть презентацию (PDF)</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="cta">
+      <a href="https://wa.me/50763803161" target="_blank" class="cta-button">Записаться на 20-мин консультацию</a>
+    </div>
+  </div>
+</body>
+</html>

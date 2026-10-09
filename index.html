@@ -49,6 +49,13 @@
       backdrop-filter: blur(12px);
     }
 
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -60,10 +67,40 @@
     }
 
     .title {
-      margin: 0;
+      margin: 4px 0 0;
       font-size: clamp(2.8rem, 4vw, 4.2rem);
       line-height: 1.02;
       letter-spacing: -0.03em;
+    }
+
+    /* СТИЛИ ДЛЯ КНОПОК ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА */
+    .lang-switch {
+      display: inline-flex;
+      gap: 4px;
+      background: rgba(255, 248, 238, 0.06);
+      border: 1px solid var(--border);
+      padding: 4px;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+
+    .lang-btn {
+      padding: 6px 14px;
+      border-radius: 999px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .lang-btn:hover {
+      color: var(--text);
+    }
+
+    .lang-btn.active {
+      background: var(--gold);
+      color: #063f47;
     }
 
     .subtitle {
@@ -294,8 +331,19 @@
   <div class="page">
     <section class="header">
       <div>
-        <div class="eyebrow">Hospitality Performance & Brand Specialist</div>
-        <h1 class="title">Yuliana Yemelianenko</h1>
+        <div class="header-top">
+          <div>
+            <div class="eyebrow">Hospitality Performance & Brand Specialist</div>
+            <h1 class="title">Yuliana Yemelianenko</h1>
+          </div>
+
+          <!-- КНОПКИ ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА -->
+          <div class="lang-switch">
+            <a href="index.html" class="lang-btn active">EN</a>
+            <a href="index_ru.html" class="lang-btn">RU</a>
+          </div>
+        </div>
+
         <p class="subtitle">Crafting eco-luxury marketing systems for premium hospitality brands with Meta Ads, TikTok Ads, Meta Pixel, and DM funnel mastery.</p>
       </div>
 

@@ -77,4 +77,315 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 16px;
-      margin-top: 20
+      margin-top: 20px;
+    }
+
+    .contact-card {
+      padding: 18px 20px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(255, 248, 238, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-card strong {
+      color: var(--gold);
+      font-size: 0.95rem;
+    }
+
+    .contact-card a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.98rem;
+    }
+
+    .section {
+      margin-top: 42px;
+      display: grid;
+      gap: 24px;
+    }
+
+    .section h2 {
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+    }
+
+    .section p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 880px;
+    }
+
+    .framework {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .framework-card {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 26px;
+      background: var(--surface);
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .framework-card h3 {
+      margin: 0 0 12px;
+      color: var(--text);
+      font-size: 1.1rem;
+    }
+
+    .framework-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .cards {
+      display: grid;
+      gap: 24px;
+      margin-top: 10px;
+    }
+
+    .case-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 32px;
+      background: rgba(255, 248, 238, 0.06);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transition: transform 0.28s ease, border-color 0.28s ease;
+    }
+
+    .case-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(211, 180, 110, 0.45);
+    }
+
+    .case-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(211, 180, 110, 0.12), transparent 22%),
+        radial-gradient(circle at bottom left, rgba(240, 227, 198, 0.08), transparent 18%);
+      pointer-events: none;
+    }
+
+    .case-content {
+      position: relative;
+      padding: 32px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .case-title {
+      margin: 0;
+      font-size: 1.7rem;
+      color: var(--text);
+    }
+
+    .case-subtitle {
+      margin: 0;
+      font-size: 0.98rem;
+      color: var(--muted);
+    }
+
+    .case-list {
+      margin: 0;
+      padding-left: 1.1rem;
+      color: var(--text);
+      display: grid;
+      gap: 10px;
+      font-size: 0.96rem;
+    }
+
+    .case-list li {
+      margin-bottom: 0.5rem;
+    }
+
+    .case-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 248, 238, 0.12);
+      border: 1px solid rgba(255, 248, 238, 0.14);
+      border-radius: 999px;
+      padding: 10px 16px;
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .case-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 248, 238, 0.18);
+      background: rgba(255, 248, 238, 0.08);
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .case-link:hover {
+      background: rgba(255, 248, 238, 0.18);
+      transform: translateY(-1px);
+    }
+
+    .cta {
+      display: flex;
+      justify-content: center;
+      margin-top: 38px;
+    }
+
+    .cta-button {
+      background: linear-gradient(135deg, #d7b266, #f1e4c0);
+      color: #1b3b2b;
+      border: none;
+      border-radius: 999px;
+      padding: 18px 34px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.24);
+    }
+
+    @media (max-width: 720px) {
+      .header {
+        padding: 28px 20px;
+      }
+
+      .case-content {
+        padding: 26px;
+      }
+
+      .framework {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="header">
+      <div>
+        <div class="eyebrow">Hospitality Performance & Brand Specialist</div>
+        <h1 class="title">Yuliana</h1>
+        <p class="subtitle">Crafting eco-luxury marketing systems for premium hospitality brands with Meta Ads, TikTok Ads, Meta Pixel, and DM funnel mastery.</p>
+      </div>
+
+      <div class="contacts">
+        <div class="contact-card">
+          <strong>Email</strong>
+          <a href="mailto:forpomelliwork@gmail.com">forpomelliwork@gmail.com</a>
+        </div>
+        <div class="contact-card">
+          <strong>LinkedIn</strong>
+          <a href="https://www.linkedin.com/in/yuliana-marketologist" target="_blank">@yuliana-marketologist</a>
+        </div>
+        <div class="contact-card">
+          <strong>Telegram</strong>
+          <a href="https://t.me/ai_by_yuliana" target="_blank" rel="noreferrer">@ai_by_yuliana</a>
+        </div>
+        <div class="contact-card">
+          <strong>WhatsApp</strong>
+          <a href="https://wa.me/50763803161" target="_blank" rel="noreferrer">+507 6380 3161</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>My Strategic Framework</h2>
+      <p>Premium hospitality campaigns require a sharply defined audience, seamless tracking, and a direct response funnel designed for one-on-one engagement. My framework blends audience analysis, Meta Ads performance, pixel-level measurement, and DM-driven conversion with luxury brand storytelling.</p>
+
+      <div class="framework">
+        <div class="framework-card">
+          <h3>Audience Analysis</h3>
+          <p>Segment premium travelers by behavior, intent and lifestyle. Target luxury eco-tourists, private island seekers, and whale-migration enthusiasts with bespoke messaging.</p>
+        </div>
+        <div class="framework-card">
+          <h3>DM Funnels</h3>
+          <p>Build high-conversion direct message funnels triggered by comments and automated responses. Nurture leads through personalized follow-up, qualification, and booking guidance.</p>
+        </div>
+        <div class="framework-card">
+          <h3>Meta Ads</h3>
+          <p>Scale campaigns with polished creatives, premium offer copy, A/B tests and optimized budgets. Align every campaign with seasonal positioning and luxury aspirations.</p>
+        </div>
+        <div class="framework-card">
+          <h3>Pixel & Tracking</h3>
+          <p>Install and optimize Meta Pixel for full attribution. Track booking events, lead quality, and funnel performance across paid media and organic engagement.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Selected Case Studies</h2>
+      <div class="cards">
+        <article class="case-card">
+          <div class="case-content">
+            <h3 class="case-title">Finca Lérida</h3>
+            <p class="case-subtitle">Misty Eco-Luxury Escape | Boquete, Panama</p>
+            <ul class="case-list">
+              <li>Off-season growth strategy with premium boutique positioning.</li>
+              <li>DM funnel triggered by <strong>Comment MIST</strong> for instant lead capture.</li>
+              <li>Automated responses, qualification, and package recommendations in DM.</li>
+              <li>Content system designed for premium travelers who seek nature, wellness, and exclusivity.</li>
+            </ul>
+            <div class="case-footer">
+              <span class="tag">$400 / mo</span>
+              <span class="tag">Eco-Luxury Funnel</span>
+              <a class="case-link" href="Lerida.pdf" target="_blank" rel="noreferrer">View Strategy Deck (PDF)</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="case-card">
+          <div class="case-content">
+            <h3 class="case-title">Isla Palenque</h3>
+            <p class="case-subtitle">Untamed Luxury | Private Island Resort</p>
+            <ul class="case-list">
+              <li>High-end positioning for $1000+/night premium stays.</li>
+              <li>Whale migration monetization through targeted season-based campaigns.</li>
+              <li>DM funnel activated by <strong>Comment WHALE</strong> and luxury lead nurturing.</li>
+              <li>Objection management built into creative messaging to address weather concerns and exclusivity.</li>
+            </ul>
+            <div class="case-footer">
+              <span class="tag">$400 / mo</span>
+              <span class="tag">Private Island Strategy</span>
+              <a class="case-link" href="Palenque.pdf" target="_blank" rel="noreferrer">View Strategy Deck (PDF)</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="cta">
+      <a href="https://wa.me/50763803161" target="_blank" class="cta-button">Book a 20-min Strategy Call</a>
+    </div>
+  </div>
+</body>
+</html>

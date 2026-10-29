@@ -42,7 +42,7 @@ h2 { font-size: clamp(2.45rem, 4.7vw, 5.1rem); }
 h3 { font-size: clamp(2rem, 3.9vw, 4.2rem); margin: .8rem 0 1.25rem; }
 em { color: var(--coral); }
 .hero { position: relative; isolation: isolate; min-height: 720px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
-.hero::before { position: absolute; z-index: 0; inset: 0; background: linear-gradient(90deg, rgba(7, 63, 71, .98) 0%, rgba(7, 63, 71, .87) 38%, rgba(7, 63, 71, .46) 68%, rgba(7, 63, 71, .25) 100%), linear-gradient(0deg, rgba(7, 63, 71, .76) 0%, transparent 55%), url("assets/hero-hospitality-warm-v2.png") center / cover no-repeat; content: ""; }
+.hero::before { position: absolute; z-index: 0; inset: 0; background: linear-gradient(90deg, rgba(7, 63, 71, .98) 0%, rgba(7, 63, 71, .87) 38%, rgba(7, 63, 71, .46) 68%, rgba(7, 63, 71, .25) 100%), linear-gradient(0deg, rgba(7, 63, 71, .76) 0%, transparent 55%), url("assets/hero-hospitality-warm-v2.jpg") center / cover no-repeat; content: ""; }
 .hero > * { position: relative; z-index: 1; }
 .hero-grid, .split-layout, .section-topline, .contact-panel { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(280px, .7fr); gap: clamp(2rem, 7vw, 9rem); align-items: end; }
 .approach-name { margin: 1rem 0 1.4rem; color: var(--coral); font-size: .68rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
@@ -196,8 +196,8 @@ em { color: var(--coral); }
 .case-cta .text-link { flex: 0 0 auto; margin-bottom: .55rem; }
 .case-art { position: relative; min-height: 300px; padding: 1.35rem; display: flex; align-items: end; overflow: hidden; border-radius: 120px 120px 20px 20px; background-color: #3f4729; background-size: cover; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08); transition: box-shadow .35s ease, transform .35s cubic-bezier(.2,.8,.2,1); }
 .case-art::before { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(41, 57, 32, .02) 22%, rgba(41, 57, 32, .78) 100%); content: ""; }
-.mana .case-art { background-image: url("assets/case-mana-ubud-warm-v2.png"); background-position: 58% center; }
-.suenyo .case-art { background-image: url("assets/case-suenyo-bali-warm-v2.png"); background-position: 58% center; }
+.mana .case-art { background-image: url("assets/case-mana-ubud-warm-v2.jpg"); background-position: 58% center; }
+.suenyo .case-art { background-image: url("assets/case-suenyo-bali-warm-v2.jpg"); background-position: 58% center; }
 .case-art span { position: relative; z-index: 1; color: var(--paper); font-family: var(--serif); font-size: 2.2rem; line-height: .88; text-shadow: 0 2px 18px rgba(0, 0, 0, .35); }
 .comparison-page { background: #061d22; }
 .comparison-page .site-header { max-width: none; }

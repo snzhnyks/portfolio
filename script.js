@@ -1,5 +1,20 @@
 document.getElementById("year").textContent = new Date().getFullYear();
 
+// Web-optimised media retains each original frame while keeping the page and
+// its lightbox responsive. Convert legacy extension references before images
+// begin loading so all content views use the published JPEG assets.
+const webMediaPath = (path) => path?.replace(/\.(?:png|jpe?g)(?=($|[?#]))/i, ".jpg");
+
+document.querySelectorAll("img[src]").forEach((image) => {
+  const source = image.getAttribute("src");
+  if (source?.startsWith("assets/")) image.setAttribute("src", webMediaPath(source));
+});
+
+document.querySelectorAll("[data-fullsrc]").forEach((element) => {
+  const fullSource = element.getAttribute("data-fullsrc");
+  if (fullSource?.startsWith("assets/")) element.setAttribute("data-fullsrc", webMediaPath(fullSource));
+});
+
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 if (!reducedMotion) {

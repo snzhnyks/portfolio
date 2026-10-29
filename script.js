@@ -15,6 +15,50 @@ document.querySelectorAll("[data-fullsrc]").forEach((element) => {
   if (fullSource?.startsWith("assets/")) element.setAttribute("data-fullsrc", webMediaPath(fullSource));
 });
 
+document.querySelectorAll("[data-deck-parts]").forEach((link) => {
+  link.addEventListener("click", async (event) => {
+    event.preventDefault();
+    if (link.dataset.loading === "true") return;
+
+    const deckWindow = window.open("", "_blank");
+    if (deckWindow) deckWindow.opener = null;
+
+    const originalMarkup = link.innerHTML;
+    link.dataset.loading = "true";
+    link.setAttribute("aria-busy", "true");
+    link.textContent = "Opening strategy deck…";
+
+    try {
+      const partPaths = link.dataset.deckParts.split(",");
+      const partBuffers = await Promise.all(
+        partPaths.map(async (path) => {
+          const response = await fetch(path);
+          if (!response.ok) throw new Error(`Could not load ${path}`);
+          return response.arrayBuffer();
+        }),
+      );
+
+      const objectUrl = URL.createObjectURL(new Blob(partBuffers, { type: "application/pdf" }));
+      if (deckWindow) {
+        deckWindow.location.href = objectUrl;
+      } else {
+        window.location.assign(objectUrl);
+      }
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 120000);
+    } catch (error) {
+      if (deckWindow) deckWindow.close();
+      link.textContent = "Deck unavailable — try again";
+      window.setTimeout(() => {
+        link.innerHTML = originalMarkup;
+      }, 2600);
+    } finally {
+      link.dataset.loading = "false";
+      link.removeAttribute("aria-busy");
+      if (link.textContent === "Opening strategy deck…") link.innerHTML = originalMarkup;
+    }
+  });
+});
+
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 if (!reducedMotion) {

@@ -491,11 +491,41 @@ footer { color: var(--mist); font-size: .7rem; letter-spacing: .06em; text-trans
   .case-console { grid-template-columns: 1fr; gap: .8rem; margin-bottom: 2.4rem; }
   .case-carousel { margin-right: -1vw; margin-left: -1vw; padding: 1rem .8rem; border-radius: 18px; }
   .case-carousel-topline { align-items: flex-start; flex-direction: column; gap: .35rem; }
-  .case-carousel-stage { min-height: 330px; margin: .35rem -1rem 0; overflow: hidden; }
-  .case-carousel-track { width: 650px; gap: .65rem; transform: translateX(-64px) rotateX(-3deg); }
-  .case-carousel-card { flex: 0 0 137px; border-radius: 14px; }
-  .case-carousel-card:hover, .case-carousel-card:focus-visible { transform: translateY(-8px) rotateY(var(--tilt)) translateZ(calc(var(--depth) + 18px)); }
-  .case-carousel-hint { font-size: .52rem; }
+  /* A one-card touch rail is clearer than the desktop 3D fan on phones. */
+  .case-carousel-stage {
+    display: block;
+    min-height: 440px;
+    margin: .5rem -1rem 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .case-carousel-stage::-webkit-scrollbar { display: none; }
+  .case-carousel-hit-areas { display: none; }
+  .case-carousel-track {
+    display: flex;
+    width: max-content;
+    min-width: max-content;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 1rem 11vw 1.5rem;
+    transform: none;
+  }
+  .case-carousel-card,
+  .case-carousel-card:hover,
+  .case-carousel-card:focus-visible,
+  .case-carousel-card.is-active {
+    flex: 0 0 76vw;
+    width: 76vw;
+    min-width: 76vw;
+    border-radius: 17px;
+    scroll-snap-align: start;
+    transform: none;
+  }
+  .case-carousel-hint { min-height: 38px; padding: .85rem .45rem 0; font-size: .6rem; line-height: 1.35; }
   .case-console-links { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); }
   .case-console-links a { min-height: 58px; padding: .75rem 0; border-bottom: 1px solid var(--line); }
   .case-console-links a:nth-child(odd) { padding-right: .75rem; border-left: 0; }
@@ -562,4 +592,238 @@ footer { color: var(--mist); font-size: .7rem; letter-spacing: .06em; text-trans
   .image-lightbox { width: calc(100vw - 1.5rem); }
   .image-lightbox img { max-height: calc(86vh - 54px); }
   footer { align-items: flex-start; flex-direction: column; gap: .45rem; }
+}
+
+/* Mobile is a distinct reading and touch experience rather than a compressed
+   desktop composition. These final overrides retain the full content while
+   keeping each decision and control comfortably reachable on a narrow screen. */
+html, body { max-width: 100%; overflow-x: clip; }
+.mobile-menu-toggle, .mobile-contact-cta { display: none; }
+
+@media (max-width: 760px) {
+  /* On a touch screen content must never wait for a scroll-reveal observer.
+     This also prevents an empty-looking card after a fast swipe through the page. */
+  .js .reveal-copy,
+  .js .reveal-copy.is-visible,
+  .js [data-reveal].is-visible .reveal-copy {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .site-header {
+    position: sticky;
+    z-index: 110;
+    top: 0;
+    display: flex;
+    min-height: 64px;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: .8rem;
+    padding: .7rem 1.25rem;
+    background: rgba(7, 63, 71, .94);
+    backdrop-filter: blur(14px);
+  }
+
+  .site-header .brand { min-width: 0; }
+  .brand-lockup strong { font-size: .58rem; }
+  .brand-lockup small { font-size: .47rem; }
+
+  .mobile-menu-toggle {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    gap: .45rem;
+    margin-left: auto;
+    padding: .55rem .7rem;
+    border: 1px solid rgba(245, 240, 232, .32);
+    border-radius: 999px;
+    background: rgba(3, 30, 35, .28);
+    color: var(--paper);
+    font-family: var(--sans);
+    font-size: .62rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .mobile-menu-toggle i,
+  .mobile-menu-toggle i::before,
+  .mobile-menu-toggle i::after {
+    display: block;
+    width: 13px;
+    height: 1px;
+    background: var(--coral);
+    content: "";
+    transition: transform .24s ease, opacity .2s ease;
+  }
+
+  .mobile-menu-toggle i { position: relative; }
+  .mobile-menu-toggle i::before { position: absolute; top: -4px; left: 0; }
+  .mobile-menu-toggle i::after { position: absolute; top: 4px; left: 0; }
+  .site-header.menu-open .mobile-menu-toggle i { background: transparent; }
+  .site-header.menu-open .mobile-menu-toggle i::before { top: 0; transform: rotate(45deg); }
+  .site-header.menu-open .mobile-menu-toggle i::after { top: 0; transform: rotate(-45deg); }
+
+  .site-header nav {
+    position: absolute;
+    top: calc(100% + 1px);
+    right: 0;
+    left: 0;
+    display: none;
+    width: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .4rem;
+    margin: 0;
+    padding: .8rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--line);
+    background: rgba(4, 47, 54, .98);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, .2);
+    font-size: .69rem;
+  }
+
+  .site-header.menu-open nav { display: grid; }
+  .site-header nav a {
+    display: flex;
+    min-height: 44px;
+    align-items: center;
+    padding: .25rem 0;
+  }
+
+  .site-header nav a::after { bottom: .15rem; }
+
+  .section,
+  .hero { min-width: 0; }
+  .hero { min-height: auto; padding-top: 4rem; padding-bottom: 2.75rem; }
+  .hero-grid > div:first-child { min-width: 0; padding-bottom: 7.25rem; }
+  h1 { font-size: clamp(3.05rem, 13.2vw, 4rem); overflow-wrap: anywhere; }
+  .hero-copy { max-width: 31ch; font-size: .98rem; }
+  .hero-actions { gap: .9rem; }
+  .hero-actions .button { min-width: 206px; }
+  .hero-identity { right: .35rem; bottom: 0; }
+  .brand-orbit { width: min(48vw, 190px); margin: 0; opacity: .82; }
+  .hero-monogram { font-size: clamp(4.2rem, 19vw, 5.8rem); }
+
+  .hero-grid > *,
+  .split-layout > *,
+  .section-topline > *,
+  .contact-panel > *,
+  .case-explorer-shell > *,
+  .service-grid > * { min-width: 0; }
+  .statement-copy,
+  .quiet-list,
+  .case-explorer-copy,
+  .case-explorer-full { overflow-wrap: anywhere; }
+
+  .case-carousel { margin-right: 0; margin-left: 0; padding: 1rem .8rem .9rem; }
+  .case-carousel-topline { gap: .45rem; }
+  .case-carousel-topline p:last-child { max-width: 27ch; line-height: 1.45; }
+  .case-carousel-stage { margin-right: -.8rem; margin-left: -.8rem; }
+  .case-carousel-card span { font-size: 1.3rem; }
+  .case-carousel-card b { font-size: .58rem; }
+  .case-carousel-card em { font-size: .57rem; }
+  .case-carousel-hint::before { color: #d4e97c; content: "Swipe through projects · "; }
+
+  .journey-map {
+    grid-template-columns: 1fr;
+    gap: .55rem;
+    padding: 1rem 1.1rem;
+    border-radius: 17px;
+    font-size: .64rem;
+  }
+
+  .journey-map i { width: 1px; height: 13px; margin-left: .25rem; background: linear-gradient(var(--coral), rgba(239, 173, 159, .08)); }
+
+  .service-grid { gap: 1rem; }
+  .service-card {
+    min-height: 0;
+    transform: none !important;
+    perspective: none;
+  }
+
+  .service-card:hover,
+  .service-card:focus-visible { transform: none !important; }
+  .service-card-inner,
+  .service-card:hover .service-card-inner,
+  .service-card:focus-visible .service-card-inner,
+  .service-card.is-expanded .service-card-inner {
+    position: static;
+    display: block;
+    transform: none !important;
+  }
+
+  .service-card-face {
+    position: relative;
+    min-height: 0;
+    padding: 1.25rem;
+    transform: none !important;
+    backface-visibility: visible;
+    -webkit-backface-visibility: visible;
+  }
+
+  .service-card-front { min-height: 400px; }
+  .service-card-back { display: none; margin-top: .7rem; min-height: 350px; }
+  .service-card.is-expanded .service-card-back { display: flex; }
+  .service-card::after {
+    position: absolute;
+    z-index: 2;
+    right: 1rem;
+    bottom: 1rem;
+    padding: .36rem .55rem;
+    border: 1px solid rgba(239, 173, 159, .52);
+    border-radius: 999px;
+    background: rgba(4, 31, 37, .84);
+    color: var(--coral);
+    content: "Tap for scope +";
+    font-size: .55rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .service-card.is-expanded::after { content: "Hide scope −"; color: #d4e97c; border-color: rgba(212, 233, 124, .48); }
+  .service-card-back strong { font-size: 2rem; }
+  .service-card-back ul { font-size: .76rem; }
+
+  .case-explorer {
+    width: 100vw;
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .case-explorer-copy { padding: 4.35rem 1.25rem 1.5rem; }
+  .case-explorer h2 { font-size: clamp(2.7rem, 13.2vw, 3.55rem); }
+  .case-explorer-visuals { min-height: 430px; }
+  .case-explorer-full { padding: 1.25rem; }
+  .case-explorer-close { top: .65rem; left: .65rem; margin: 0; }
+  .case-explorer-nav { position: relative; }
+  .case-explorer-nav button { min-height: 62px; font-size: .61rem; }
+
+  .mobile-contact-cta {
+    position: fixed;
+    z-index: 90;
+    right: 1rem;
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    display: inline-flex;
+    min-height: 46px;
+    align-items: center;
+    gap: .45rem;
+    padding: .7rem .95rem;
+    border: 1px solid rgba(245, 240, 232, .62);
+    border-radius: 999px;
+    background: var(--coral);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .28);
+    color: var(--ink);
+    font-size: .66rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .case-explorer[open] ~ .mobile-contact-cta,
+  .image-lightbox[open] ~ .mobile-contact-cta { display: none; }
 }

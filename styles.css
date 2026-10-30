@@ -178,7 +178,7 @@ em { color: var(--coral); }
 .content-cover-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.45rem, 1.2vw, .9rem); margin-top: .65rem; }
 .content-cover-grid figure { min-width: 0; margin: 0; overflow: hidden; border: 1px solid rgba(245, 240, 232, .14); background: #0b3138; }
 .content-cover-grid img { display: block; width: 100%; aspect-ratio: 3 / 4; height: auto; object-fit: cover; cursor: zoom-in; transition: transform .32s cubic-bezier(.2,.8,.2,1), filter .32s ease; }
-.case-rationale { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin: 1.45rem 0 0 76px; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+.case-rationale { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 1.25rem 2rem; margin: 1.45rem 0 0 76px; padding-top: 1.25rem; border-top: 1px solid var(--line); }
 .case-rationale > p { max-width: 650px; margin: 0; color: var(--mist); font-size: .93rem; line-height: 1.6; }
 .case-rationale strong { display: block; margin-bottom: .3rem; color: var(--paper); font-size: .65rem; letter-spacing: .13em; text-transform: uppercase; }
 .case-card { position: relative; display: grid; grid-template-columns: 76px minmax(0, 1.2fr) minmax(180px, .42fr); gap: 2rem; align-items: stretch; padding: 2.25rem 0; border-top: 1px solid var(--line); transition: border-color .3s ease; }
@@ -187,7 +187,14 @@ em { color: var(--coral); }
 .case-points { display: grid; gap: .75rem; margin: 1.8rem 0; }
 .case-points p { margin: 0; padding-top: .7rem; border-top: 1px solid var(--line); color: var(--mist); }
 .case-points strong { display: inline-block; width: 112px; color: var(--paper); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
-.case-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+.case-links { display: flex; justify-self: end; gap: 1rem; flex-wrap: wrap; }
+.case-conversion-cta { display: flex; grid-column: 1 / -1; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 1.1rem 1.2rem; border: 1px solid rgba(245, 240, 232, .18); border-radius: 14px; background: linear-gradient(118deg, rgba(239, 173, 159, .16), rgba(245, 240, 232, .055)); box-shadow: 0 16px 28px rgba(0, 0, 0, .12); }
+.case-conversion-cta > div:first-child { min-width: 0; }
+.case-conversion-cta strong { margin-bottom: .34rem; color: var(--paper); font-size: .68rem; letter-spacing: .12em; }
+.case-conversion-cta p { max-width: 54ch; margin: 0; color: var(--mist); font-size: .82rem; line-height: 1.48; }
+.case-conversion-actions { display: flex; flex: 0 0 auto; align-items: center; gap: 1rem; }
+.case-conversion-actions .button { min-height: 42px; padding: .65rem .9rem; font-size: .61rem; }
+.case-conversion-actions > a:not(.button) { padding-bottom: .22rem; border-bottom: 1px solid var(--coral); color: var(--paper); font-size: .73rem; font-weight: 800; white-space: nowrap; }
 .case-explorer-trigger { appearance: none; padding: 0 0 .25rem; border: 0; border-bottom: 1px solid var(--coral); background: transparent; color: var(--paper); font-family: var(--sans); font-size: .84rem; font-weight: 700; line-height: inherit; text-align: left; cursor: pointer; }
 .case-explorer-trigger:focus-visible, .case-explorer button:focus-visible, .case-explorer a:focus-visible { outline: 2px solid var(--coral); outline-offset: 5px; }
 .case-cta { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-top: 1rem; padding: 2rem 0 0 76px; border-top: 1px solid var(--line); }
@@ -550,7 +557,10 @@ footer { color: var(--mist); font-size: .7rem; letter-spacing: .06em; text-trans
   .case-content-heading { align-items: flex-start; flex-direction: column; }
   .case-content-heading > p { text-align: left; }
   .case-content-layout { grid-template-columns: 1fr; }
-  .case-rationale { align-items: flex-start; flex-direction: column; margin-left: 42px; }
+  .case-rationale { grid-template-columns: 1fr; align-items: start; margin-left: 42px; }
+  .case-links { justify-self: start; }
+  .case-conversion-cta { align-items: flex-start; flex-direction: column; }
+  .case-conversion-actions { flex-wrap: wrap; }
   .case-explorer { width: calc(100vw - 1.25rem); height: calc(100vh - 1.25rem); }
   .case-explorer-orbit-track { width: 210px; height: 300px; }
   .case-orbit-card:nth-child(1) { transform: rotateY(0deg) translateZ(242px); }

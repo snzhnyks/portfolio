@@ -15,48 +15,54 @@ document.querySelectorAll("[data-fullsrc]").forEach((element) => {
   if (fullSource?.startsWith("assets/")) element.setAttribute("data-fullsrc", webMediaPath(fullSource));
 });
 
-document.querySelectorAll("[data-deck-parts]").forEach((link) => {
-  link.addEventListener("click", async (event) => {
-    event.preventDefault();
-    if (link.dataset.loading === "true") return;
+const openSplitDeck = async (link) => {
+  if (link.dataset.loading === "true") return;
 
-    const deckWindow = window.open("", "_blank");
-    if (deckWindow) deckWindow.opener = null;
+  const deckWindow = window.open("", "_blank");
+  if (deckWindow) deckWindow.opener = null;
 
-    const originalMarkup = link.innerHTML;
-    link.dataset.loading = "true";
-    link.setAttribute("aria-busy", "true");
-    link.textContent = "Opening strategy deck…";
+  const originalMarkup = link.innerHTML;
+  link.dataset.loading = "true";
+  link.setAttribute("aria-busy", "true");
+  link.textContent = "Opening strategy deck…";
 
-    try {
-      const partPaths = link.dataset.deckParts.split(",");
-      const partBuffers = await Promise.all(
-        partPaths.map(async (path) => {
-          const response = await fetch(path);
-          if (!response.ok) throw new Error(`Could not load ${path}`);
-          return response.arrayBuffer();
-        }),
-      );
+  try {
+    const partPaths = link.dataset.deckParts.split(",");
+    const partBuffers = await Promise.all(
+      partPaths.map(async (path) => {
+        const response = await fetch(path);
+        if (!response.ok) throw new Error(`Could not load ${path}`);
+        return response.arrayBuffer();
+      }),
+    );
 
-      const objectUrl = URL.createObjectURL(new Blob(partBuffers, { type: "application/pdf" }));
-      if (deckWindow) {
-        deckWindow.location.href = objectUrl;
-      } else {
-        window.location.assign(objectUrl);
-      }
-      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 120000);
-    } catch (error) {
-      if (deckWindow) deckWindow.close();
-      link.textContent = "Deck unavailable — try again";
-      window.setTimeout(() => {
-        link.innerHTML = originalMarkup;
-      }, 2600);
-    } finally {
-      link.dataset.loading = "false";
-      link.removeAttribute("aria-busy");
-      if (link.textContent === "Opening strategy deck…") link.innerHTML = originalMarkup;
+    const objectUrl = URL.createObjectURL(new Blob(partBuffers, { type: "application/pdf" }));
+    if (deckWindow) {
+      deckWindow.location.href = objectUrl;
+    } else {
+      window.location.assign(objectUrl);
     }
-  });
+    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 120000);
+  } catch (error) {
+    if (deckWindow) deckWindow.close();
+    link.textContent = "Deck unavailable — try again";
+    window.setTimeout(() => {
+      link.innerHTML = originalMarkup;
+    }, 2600);
+  } finally {
+    link.dataset.loading = "false";
+    link.removeAttribute("aria-busy");
+    if (link.textContent === "Opening strategy deck…") link.innerHTML = originalMarkup;
+  }
+};
+
+// The case explorer copies its content into a dialog at runtime. Event delegation
+// keeps the reconstructed Mana and Suenyo PDFs available on every visible deck link.
+document.addEventListener("click", (event) => {
+  const target = event.target instanceof Element ? event.target.closest("a[data-deck-parts]") : null;
+  if (!target) return;
+  event.preventDefault();
+  openSplitDeck(target);
 });
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -404,6 +410,11 @@ if (caseExplorer && caseStudies.length) {
       explorerLogic.append(item);
     });
     explorerDeck.href = deck?.getAttribute("href") || "#";
+    if (deck?.dataset.deckParts) {
+      explorerDeck.dataset.deckParts = deck.dataset.deckParts;
+    } else {
+      delete explorerDeck.dataset.deckParts;
+    }
     const gridSource = proposedGrid?.currentSrc || proposedGrid?.src;
     setExplorerMedia(gridSource, proposedGrid?.alt || `${explorerTitle.textContent.trim()} proposed content direction`, "Proposed content direction");
     makeCaseImageInteractive(explorerImage);

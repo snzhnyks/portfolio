@@ -229,6 +229,53 @@ updateScrollProgress();
 window.addEventListener("scroll", updateScrollProgress, { passive: true });
 window.addEventListener("resize", updateScrollProgress);
 
+const siteHeader = document.querySelector(".site-header");
+const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
+const primaryNavigation = document.querySelector("#primary-navigation");
+
+if (siteHeader && mobileMenuToggle && primaryNavigation) {
+  const closeMobileMenu = () => {
+    siteHeader.classList.remove("menu-open");
+    mobileMenuToggle.setAttribute("aria-expanded", "false");
+  };
+
+  mobileMenuToggle.addEventListener("click", () => {
+    const isOpen = siteHeader.classList.toggle("menu-open");
+    mobileMenuToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  primaryNavigation.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMobileMenu);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMobileMenu();
+  });
+}
+
+const serviceCards = [...document.querySelectorAll(".service-card")];
+const usesTapServiceCards = () => window.matchMedia("(max-width: 760px), (hover: none), (pointer: coarse)").matches;
+
+serviceCards.forEach((card) => {
+  const back = card.querySelector(".service-card-back");
+  const toggleServiceCard = () => {
+    if (!usesTapServiceCards()) return;
+    const isExpanded = card.classList.toggle("is-expanded");
+    card.setAttribute("aria-expanded", String(isExpanded));
+    if (back) back.setAttribute("aria-hidden", String(!isExpanded));
+  };
+
+  card.setAttribute("role", "button");
+  card.setAttribute("aria-expanded", "false");
+  card.addEventListener("click", toggleServiceCard);
+  card.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    if (!usesTapServiceCards()) return;
+    event.preventDefault();
+    toggleServiceCard();
+  });
+});
+
 const caseLinks = [...document.querySelectorAll("[data-case-nav]")];
 const caseStudies = [...document.querySelectorAll("[data-case]")];
 const caseImageSelector = ".case-profile-header img, .case-profile-grids img, .case-content-showcase img, .case-explorer-media img";
@@ -274,6 +321,11 @@ const setActiveCarouselCard = (index) => {
   });
 };
 
+const resetMobileCarousel = () => {
+  if (!carouselStage || !window.matchMedia("(max-width: 760px)").matches) return;
+  carouselStage.scrollLeft = 0;
+};
+
 const getCarouselCardAtPoint = (clientX, clientY) => {
   const candidates = carouselCards
     .map((card, index) => {
@@ -298,12 +350,37 @@ if (carouselCards.length && carouselHitAreas.length) {
 }
 
 if (carouselStage && carouselCards.length) {
+  // Some mobile browsers restore a nested scroll position after a reload or
+  // an anchor jump. Start the swipe rail at the first project every time.
+  window.requestAnimationFrame(resetMobileCarousel);
+
+  const restoreFirstMobileCard = () => {
+    resetMobileCarousel();
+    window.requestAnimationFrame(resetMobileCarousel);
+    // Browser scroll restoration can run just after the page load event.
+    // One short final pass prevents a first visit from starting midway through
+    // the rail, while normal user swipes remain completely untouched.
+    window.setTimeout(resetMobileCarousel, 160);
+    window.setTimeout(resetMobileCarousel, 700);
+  };
+
+  window.addEventListener("load", restoreFirstMobileCard, { once: true });
+  window.addEventListener("pageshow", restoreFirstMobileCard);
+
   carouselStage.addEventListener("pointermove", (event) => {
     setActiveCarouselCard(getCarouselCardAtPoint(event.clientX, event.clientY));
   });
 
   carouselStage.addEventListener("pointerleave", () => setActiveCarouselCard(-1));
 }
+
+document.querySelectorAll('a[href="#cases"]').forEach((link) => {
+  link.addEventListener("click", () => {
+    // Let the native anchor scroll begin, then guarantee that its independent
+    // horizontal rail starts at card one.
+    window.requestAnimationFrame(() => window.requestAnimationFrame(resetMobileCarousel));
+  });
+});
 
 if (caseExplorer && caseStudies.length) {
   const explorerClose = caseExplorer.querySelector(".case-explorer-close");
@@ -457,7 +534,11 @@ if (caseExplorer && caseStudies.length) {
     if (index < 0) return;
     activeTrigger = trigger || document.activeElement;
     window.clearTimeout(explorerIntroTimer);
-    caseExplorer.classList.add("is-intro");
+    // The introductory 3D orbit is a desktop flourish. On a phone, opening
+    // straight into the useful overview is faster and avoids an unnecessary
+    // full-screen transition before the case content can be read.
+    const showOrbitIntro = !reducedMotion && !window.matchMedia("(max-width: 760px)").matches;
+    caseExplorer.classList.toggle("is-intro", showOrbitIntro);
     caseExplorer.style.setProperty("--orbit-angle", `${index * -90 + 180}deg`);
     showExplorerDialog();
 
@@ -469,15 +550,20 @@ if (caseExplorer && caseStudies.length) {
       caseExplorer.classList.remove("is-intro");
     }
 
-    window.requestAnimationFrame(() => {
+    if (showOrbitIntro) {
       window.requestAnimationFrame(() => {
-        caseExplorer.style.setProperty("--orbit-angle", `${index * -90}deg`);
+        window.requestAnimationFrame(() => {
+          caseExplorer.style.setProperty("--orbit-angle", `${index * -90}deg`);
+        });
       });
-    });
-    explorerIntroTimer = window.setTimeout(() => {
-      caseExplorer.classList.remove("is-intro");
-      explorerClose.focus();
-    }, reducedMotion ? 0 : 900);
+      explorerIntroTimer = window.setTimeout(() => {
+        caseExplorer.classList.remove("is-intro");
+        explorerClose.focus();
+      }, 900);
+    } else {
+      caseExplorer.style.setProperty("--orbit-angle", `${index * -90}deg`);
+      window.requestAnimationFrame(() => explorerClose.focus());
+    }
   };
 
   caseLinks.forEach((link) => {

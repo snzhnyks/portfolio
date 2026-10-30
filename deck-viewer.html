@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#063e43" />
+    <title>Strategy deck</title>
+    <style>
+      :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; background: #063e43; color: #f7f2e9; }
+      * { box-sizing: border-box; }
+      body { min-height: 100vh; margin: 0; background: radial-gradient(circle at top right, #285e5a 0, transparent 36%), #063e43; }
+      main { width: min(1180px, calc(100% - 2rem)); min-height: 100vh; margin: 0 auto; padding: 1.25rem 0; display: grid; grid-template-rows: auto 1fr; gap: 1rem; }
+      header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+      a { color: inherit; text-decoration: none; }
+      .back, .download { border: 1px solid rgba(247,242,233,.52); border-radius: 999px; padding: .7rem 1rem; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+      .download { display: none; background: #efa493; border-color: #efa493; color: #083d42; }
+      .deck-title { font-family: Georgia, serif; font-size: clamp(1.25rem, 3vw, 2rem); }
+      .viewer { position: relative; min-height: calc(100vh - 6rem); overflow: hidden; border: 1px solid rgba(247,242,233,.3); border-radius: 1rem; background: rgba(0,0,0,.28); }
+      iframe { width: 100%; height: 100%; min-height: calc(100vh - 6rem); border: 0; background: #fff; }
+      .loading, .error { position: absolute; inset: 0; display: grid; align-content: center; justify-items: center; gap: .7rem; padding: 2rem; text-align: center; background: #063e43; }
+      .loading::after { content: ""; width: 1.2rem; height: 1.2rem; border: 2px solid rgba(247,242,233,.25); border-top-color: #efa493; border-radius: 50%; animation: spin .7s linear infinite; }
+      .error { display: none; }
+      body.ready .loading { display: none; }
+      body.failed .loading { display: none; }
+      body.failed .error { display: grid; }
+      body.ready .download { display: inline-flex; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @media (max-width: 580px) { main { width: min(100% - 1rem, 1180px); padding: .5rem 0; } header { align-items: flex-start; flex-wrap: wrap; } .deck-title { order: 3; width: 100%; } .viewer, iframe { min-height: calc(100vh - 9rem); } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <a class="back" href="index.html#cases">← Back to cases</a>
+        <strong class="deck-title" id="deck-title">Opening strategy deck</strong>
+        <a class="download" id="download" href="#">Download PDF ↗</a>
+      </header>
+      <section class="viewer" aria-live="polite">
+        <div class="loading">Preparing your presentation…</div>
+        <div class="error"><strong>We couldn’t open this deck.</strong><span>Please return to the case and try again.</span></div>
+        <iframe id="deck-frame" title="Strategy deck"></iframe>
+      </section>
+    </main>
+    <script>
+      const deckKey = new URLSearchParams(window.location.search).get("deck");
+      const decks = {
+        mana: { title: "Mana Earthly Paradise — Strategy deck", folder: "mana", count: 24, filename: "Mana_Earthly_Paradise_Instagram_Strategy_EN.pdf" },
+        suenyo: { title: "Suenyo Eco Retreat — Strategy deck", folder: "suenyo", count: 11, filename: "Suenyo_Eco_Retreat_Instagram_Strategy_EN.pdf" },
+      };
+      const deck = decks[deckKey];
+      const title = document.getElementById("deck-title");
+      const frame = document.getElementById("deck-frame");
+      const download = document.getElementById("download");
+      if (!deck) {
+        document.body.classList.add("failed");
+      } else {
+        title.textContent = deck.title;
+        const paths = Array.from({ length: deck.count }, (_, index) => `assets/deck-parts/${deck.folder}/part-${String(index).padStart(3, "0")}`);
+        Promise.all(paths.map(async (path) => {
+          const response = await fetch(path);
+          if (!response.ok) throw new Error(`Could not load ${path}`);
+          return response.arrayBuffer();
+        }))
+          .then((parts) => {
+            const url = URL.createObjectURL(new Blob(parts, { type: "application/pdf" }));
+            frame.src = url;
+            download.href = url;
+            download.download = deck.filename;
+            document.body.classList.add("ready");
+            window.addEventListener("pagehide", () => URL.revokeObjectURL(url), { once: true });
+          })
+          .catch(() => document.body.classList.add("failed"));
+      }
+    </script>
+  </body>
+</html>

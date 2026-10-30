@@ -56,14 +56,18 @@ const openSplitDeck = async (link) => {
   }
 };
 
-// The case explorer copies its content into a dialog at runtime. Event delegation
-// keeps the reconstructed Mana and Suenyo PDFs available on every visible deck link.
-document.addEventListener("click", (event) => {
-  const target = event.target instanceof Element ? event.target.closest("a[data-deck-parts]") : null;
-  if (!target) return;
-  event.preventDefault();
-  openSplitDeck(target);
-});
+const bindSplitDeck = (link) => {
+  if (!link?.dataset.deckParts || link.dataset.splitDeckBound === "true") return;
+  link.dataset.splitDeckBound = "true";
+  link.addEventListener("click", (event) => {
+    event.preventDefault();
+    openSplitDeck(link);
+  });
+};
+
+// The case explorer copies its content into a dialog at runtime. Bind each
+// visible link itself so reconstructed Mana and Suenyo PDFs work in every view.
+document.querySelectorAll("[data-deck-parts]").forEach(bindSplitDeck);
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -412,6 +416,7 @@ if (caseExplorer && caseStudies.length) {
     explorerDeck.href = deck?.getAttribute("href") || "#";
     if (deck?.dataset.deckParts) {
       explorerDeck.dataset.deckParts = deck.dataset.deckParts;
+      bindSplitDeck(explorerDeck);
     } else {
       delete explorerDeck.dataset.deckParts;
     }
@@ -430,6 +435,7 @@ if (caseExplorer && caseStudies.length) {
         item.style.removeProperty("--reveal-delay");
       });
       section.querySelectorAll(caseImageSelector).forEach(makeCaseImageInteractive);
+      section.querySelectorAll("[data-deck-parts]").forEach(bindSplitDeck);
       explorerFull.append(section);
     });
 
